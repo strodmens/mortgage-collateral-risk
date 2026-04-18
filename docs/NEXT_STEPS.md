@@ -5,39 +5,51 @@ Read `CONTEXT.md` and `docs/PLAN.md` first — this file is the short-form "what
 
 ## Current state
 
-- Notebook `mortgage_collateral_risk_dl.ipynb` is code-complete (all 12 planned todos done).
-- It has **not** yet been executed end-to-end on real data.
-- Active branch at time of writing: `feat/project-notebook`, PR #1 open.
+- Notebook `mortgage_collateral_risk_dl.ipynb` executed **end-to-end successfully** (88/88 cells, zero errors).
+- CPU baseline run complete (reduced epochs + subsampled data). All model artefacts in `models/`.
+- Streamlit `app.py` loads trained models and produces predictions correctly.
+- Active branch: `cursor/add-next-steps-doc-3ac2` (PR #2), base `feat/project-notebook` (PR #1).
+- **Next priority**: re-run on the 4070 GPU with full data and proper epoch counts for production results.
 
 ## Next actions (in order)
 
 ### 1. Environment on the 4070 machine
 
-- Clone repo, checkout `feat/project-notebook`.
-- Create venv, `pip install -r requirements.txt`.
-- Replace CPU torch with CUDA build:
-
 ```bash
+git clone https://github.com/strodmens/mortgage-collateral-risk-dl.git
+cd mortgage-collateral-risk-dl
+git checkout feat/project-notebook   # or the latest branch with fixes
+python -m venv .venv && source .venv/bin/activate   # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
 pip install --upgrade --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu121
 ```
 
 ### 2. Credentials / assets
 
-- Kaggle API token at `~/.kaggle/kaggle.json` (or `%USERPROFILE%\.kaggle\kaggle.json` on Windows).
-- (Optional) Download `glove.6B.100d.txt` into `data/` to enable the GloVe BiLSTM variation.
+```bash
+export KAGGLE_API_TOKEN=<your-token>   # from kaggle.com/settings → API
+cd data && wget https://nlp.stanford.edu/data/glove.6B.zip && unzip glove.6B.zip glove.6B.100d.txt && rm glove.6B.zip
+```
 
-### 3. First real run of the notebook (top-to-bottom)
+### 3. GPU-quality run of the notebook
 
-- Auto-downloads: SoCal house images, London real-estate text, Airbnb NYC fallback.
-- Watch for dataset issues flagged in the plan:
-  - SoCal: enough samples per price band? If not → collapse 5 bands → 4.
-  - London text: avg description ≥15 words after HTML stripping?
+Before running, adjust these settings in the notebook for GPU:
+- Cell 3: change `NUM_WORKERS = 0` → `NUM_WORKERS = 4`
+- Cell 31: the `MAX_TRAIN_SAMPLES` check auto-detects CUDA and uses the full dataset
+- Cell 38: change `epochs=5, patience=3` → `epochs=30, patience=7`
+- Cell 42: change `epochs=3, patience=2` → `epochs=15, patience=5`
+- Cell 43: change `epochs=3, patience=2` → `epochs=20, patience=5`
+- Cell 54: change `epochs=5, patience=3` → `epochs=30, patience=7`
+- Cell 57: change `epochs=5, patience=3` → `epochs=30, patience=7`
+- Cell 72: change `range(5)` → `range(30)` and `Epoch .../5` → `Epoch .../30`
 
-### 4. Modeling passes
+Then run all cells top-to-bottom. Datasets auto-download via Kaggle CLI.
 
-- CNN: from-scratch 4-block → ResNet-50 transfer (freeze → fine-tune `layer3`/`layer4`/`fc`).
-- RNN: single-layer LSTM (learned embeddings) → BiLSTM 2-layer + GloVe-100d.
-- Joint model: ResNet-50 GAP (2048-d) + BiLSTM hidden (256-d) → 2 FC → softmax, both backbones frozen initially.
+### 4. Resolved dataset questions
+
+- SoCal: **15,474 images**, well-balanced 5 bands (~3k per band) — no need to collapse.
+- London text: **996 samples** after cleaning, mean 252 words, all ≥15 words — good.
+- Airbnb: no usable description column — joint model correctly pairs SoCal+London by band.
 
 ### 5. Business integration
 

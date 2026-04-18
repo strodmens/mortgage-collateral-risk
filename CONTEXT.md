@@ -58,7 +58,19 @@ Data and trained models are git-ignored — they live in `data/` and `models/` l
 
 ## Status at last handoff
 
-All 12 planned todos are complete in the notebook. The notebook is a code-complete template but has **not yet been executed end-to-end with real data** — that's the next step on the 4070 machine.
+The notebook has been **executed end-to-end successfully** (88/88 cells, zero errors) on CPU with reduced epochs (5) and subsampled training data (2000 images). All model artefacts saved to `models/`. Streamlit app loads models and produces predictions correctly.
+
+### CPU-run results (baseline — will improve on GPU with full data + epochs)
+
+| Model | Accuracy | Macro F1 |
+|-------|----------|----------|
+| CNN from scratch (5 epochs, 2k images) | 20.2% | 15.2% |
+| CNN ResNet-50 transfer (3+3 epochs) | 33.6% | 32.5% |
+| LSTM v1 single-layer (5 epochs, 697 texts) | 22.0% | 21.5% |
+| LSTM v2 BiLSTM+GloVe (5 epochs) | 26.0% | 22.5% |
+| Joint CNN+LSTM (5 epochs) | 32.7% | 31.9% |
+
+For production-quality results: run on the 4070 with full training data, 25–30 epochs, and the `NUM_WORKERS` / `MAX_TRAIN_SAMPLES` settings restored to GPU defaults.
 
 ## Next steps on the 4070 machine
 
