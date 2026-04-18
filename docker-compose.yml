@@ -1,0 +1,20 @@
+# Streamlit collateral-risk UI. Mount trained weights + vocab from the host.
+#
+# Prerequisites on host: ./models must contain at least:
+#   cnn_transfer_deploy.pt, lstm_deploy.pt, vocab.json
+#
+# Usage:
+#   docker compose build
+#   docker compose up
+#   Open http://localhost:8501
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mortgage-collateral-risk:cpu
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./models:/app/models:ro

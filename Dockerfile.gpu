@@ -1,0 +1,25 @@
+# GPU image for Streamlit on hosts with NVIDIA Container Toolkit.
+# Prebuilt PyTorch image includes CUDA + cuDNN; install the rest from requirements-app.txt.
+#
+# Build:  docker build -f Dockerfile.gpu -t mortgage-risk:gpu .
+# Run:    see docker-compose.gpu.yml
+FROM pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+COPY requirements-app.txt /tmp/requirements-app.txt
+RUN pip install --upgrade pip && pip install -r /tmp/requirements-app.txt
+
+COPY app.py /app/app.py
+
+EXPOSE 8501
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=4)" || exit 1
+
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true"]

@@ -1,0 +1,27 @@
+# Same as docker-compose.yml but GPU-backed PyTorch image.
+#
+# Prerequisites:
+#   - NVIDIA driver on the host
+#   - NVIDIA Container Toolkit (https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+#
+# Usage:
+#   docker compose -f docker-compose.gpu.yml build
+#   docker compose -f docker-compose.gpu.yml up
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    image: mortgage-collateral-risk:gpu
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./models:/app/models:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

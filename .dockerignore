@@ -1,0 +1,22 @@
+.git
+.github
+.venv
+venv
+__pycache__
+*.py[cod]
+*$py.class
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.ipynb_checkpoints
+*.log
+.env
+.env.*
+academics
+*.pdf
+*.docx
+data
+# Keep models out of the image; mount at runtime (see docker-compose).
+models
+mortgage_collateral_risk_dl_executed.ipynb
+previous_credit_risk_scoring_final_project.ipynb
