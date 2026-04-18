@@ -52,8 +52,12 @@ pip install --upgrade --force-reinstall torch torchvision --index-url https://do
 
 ### 7. Deployment
 
-- `streamlit run app.py` locally.
-- Deploy to Hugging Face Spaces.
+- `streamlit run app.py` locally (Docker available).
+- Deploy to one of the available hosts:
+  - **Hugging Face Spaces** — original plan, free, supports Streamlit directly.
+  - **Render** (render.com) — Docker support, more RAM on paid tiers.
+  - **Vercel** (vercel.com) — available, better suited for static front-ends.
+  - **Custom domain** — can point at whichever host is chosen.
 - If memory is tight on the free tier → swap ResNet-50 → MobileNet-V3 for the deployed artefact only.
 - Record screen capture for submission.
 

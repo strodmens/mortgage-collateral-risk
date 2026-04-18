@@ -14,12 +14,30 @@ Advanced Machine Learning course **final group project** (solo submission by Rai
   - CNN: Kaggle `ted8080/house-prices-and-images-socal`
   - RNN: Kaggle `kanchana1990/real-estate-data-london-2024` (or fallback Airbnb NYC)
   - Joint-model paired subset: constructed by band-matching within the existing datasets
-- **Framework**: PyTorch 2.x (CPU installed on the Mac, **CUDA build required on the 4070 machine** — see below).
+- **Framework**: PyTorch 2.x (**CUDA build required on the 4070 machine** — see below).
 - **CNN architectures**: from-scratch 4-block CNN + ResNet-50 transfer learning (2-phase: freeze → fine-tune `layer3`/`layer4`/`fc`).
 - **RNN architectures**: single-layer LSTM with learned embeddings + bidirectional stacked 2-layer LSTM with GloVe-100d.
 - **Joint model**: ResNet-50 GAP features (2048-d) + BiLSTM hidden state (256-d) → 2 FC layers → softmax (both backbones frozen).
 - **Business rule**: `LOW` / `MEDIUM` / `HIGH` collateral risk flag based on how far each model's predicted band is below the applicant's claimed band.
-- **Deployment**: Streamlit (`app.py`) targeting Hugging Face Spaces.
+- **Deployment**: Streamlit (`app.py`) — targeting Hugging Face Spaces, Render, or Vercel (see hosting options above). Custom domain available.
+
+## Local hardware
+
+- **GPU**: NVIDIA GeForce RTX 4070
+- **CPU**: Intel Core i7-13700K
+- **RAM**: 32 GB
+- **Docker**: available locally
+
+## Hosting / deployment options
+
+| Platform | Notes |
+|----------|-------|
+| **Vercel** (vercel.com) | Available — good for static front-ends, limited for ML model serving |
+| **Render** (render.com) | Available — supports Docker, free-tier has 512 MB RAM (paid tiers have more) |
+| **Custom domain** | Own domain available for pointing at any of the above |
+| **Hugging Face Spaces** | Original plan target — free tier, supports Streamlit + small models |
+
+Deployment decision: pick whichever host can serve ResNet-50 + LSTM inference within memory limits. Render (Docker) or HF Spaces are strongest candidates. Custom domain can CNAME to either.
 
 ## Repo layout
 
@@ -31,7 +49,8 @@ Advanced Machine Learning course **final group project** (solo submission by Rai
 ├── app.py                                   # Streamlit deployment prototype
 ├── requirements.txt                         # Python dependencies
 ├── docs/
-│   └── PLAN.md                              # Full implementation plan
+│   ├── PLAN.md                              # Full implementation plan
+│   └── NEXT_STEPS.md                        # Actionable continuation checklist
 └── CONTEXT.md                               # This file
 ```
 
