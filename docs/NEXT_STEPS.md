@@ -31,19 +31,16 @@ export KAGGLE_API_TOKEN=<your-token>   # from kaggle.com/settings → API
 cd data && wget https://nlp.stanford.edu/data/glove.6B.zip && unzip glove.6B.zip glove.6B.100d.txt && rm glove.6B.zip
 ```
 
-### 3. GPU-quality run of the notebook
+### 3. Run the notebook
 
-Before running, adjust these settings in the notebook for GPU:
-- Cell 3: change `NUM_WORKERS = 0` → `NUM_WORKERS = 4`
-- Cell 31: the `MAX_TRAIN_SAMPLES` check auto-detects CUDA and uses the full dataset
-- Cell 38: change `epochs=5, patience=3` → `epochs=30, patience=7`
-- Cell 42: change `epochs=3, patience=2` → `epochs=15, patience=5`
-- Cell 43: change `epochs=3, patience=2` → `epochs=20, patience=5`
-- Cell 54: change `epochs=5, patience=3` → `epochs=30, patience=7`
-- Cell 57: change `epochs=5, patience=3` → `epochs=30, patience=7`
-- Cell 72: change `range(5)` → `range(30)` and `Epoch .../5` → `Epoch .../30`
+The notebook is now configured for GPU training (full dataset, 30 epochs, NUM_WORKERS=4). Just run all cells top-to-bottom. Datasets auto-download via Kaggle CLI.
 
-Then run all cells top-to-bottom. Datasets auto-download via Kaggle CLI.
+Expected GPU training time on RTX 4070 (approximate):
+- CNN from scratch (30 epochs, ~10.8k images): ~15 min
+- ResNet-50 transfer phase 1 (15 epochs): ~10 min
+- ResNet-50 transfer phase 2 (20 epochs): ~15 min
+- LSTM v1 + v2 (30 epochs each, ~700 texts): < 5 min total
+- Joint model (30 epochs): ~10 min
 
 ### 4. Resolved dataset questions
 

@@ -14,19 +14,22 @@ Advanced Machine Learning course **final group project** (solo submission by Rai
   - CNN: Kaggle `ted8080/house-prices-and-images-socal`
   - RNN: Kaggle `kanchana1990/real-estate-data-london-2024` (or fallback Airbnb NYC)
   - Joint-model paired subset: constructed by band-matching within the existing datasets
-- **Framework**: PyTorch 2.x (**CUDA build required on the 4070 machine** — see below).
+- **Framework**: PyTorch 2.x with CUDA (local machine has RTX 4070).
 - **CNN architectures**: from-scratch 4-block CNN + ResNet-50 transfer learning (2-phase: freeze → fine-tune `layer3`/`layer4`/`fc`).
 - **RNN architectures**: single-layer LSTM with learned embeddings + bidirectional stacked 2-layer LSTM with GloVe-100d.
 - **Joint model**: ResNet-50 GAP features (2048-d) + BiLSTM hidden state (256-d) → 2 FC layers → softmax (both backbones frozen).
 - **Business rule**: `LOW` / `MEDIUM` / `HIGH` collateral risk flag based on how far each model's predicted band is below the applicant's claimed band.
 - **Deployment**: Streamlit (`app.py`) — targeting Hugging Face Spaces, Render, or Vercel (see hosting options above). Custom domain available.
 
-## Local hardware
+## Local hardware (primary development machine)
 
-- **GPU**: NVIDIA GeForce RTX 4070
+- **GPU**: NVIDIA GeForce RTX 4070 (CUDA)
 - **CPU**: Intel Core i7-13700K
 - **RAM**: 32 GB
+- **Storage**: Samsung 980 NVMe 1 TB
 - **Docker**: available locally
+
+Note: Cursor Cloud Agents run on a CPU-only VM — they cannot train models on GPU. All training should be done locally. The cloud agent verified the notebook runs end-to-end (CPU baseline) and fixed all bugs; now the notebook is configured for GPU-quality training on the local machine.
 
 ## Hosting / deployment options
 
@@ -70,7 +73,7 @@ The notebook has been **executed end-to-end successfully** (88/88 cells, zero er
 | LSTM v2 BiLSTM+GloVe (5 epochs) | 26.0% | 22.5% |
 | Joint CNN+LSTM (5 epochs) | 32.7% | 31.9% |
 
-For production-quality results: run on the 4070 with full training data, 25–30 epochs, and the `NUM_WORKERS` / `MAX_TRAIN_SAMPLES` settings restored to GPU defaults.
+The notebook is now configured for GPU-quality training: full dataset, 30 epochs, NUM_WORKERS=4, no subsampling. Just run all cells top-to-bottom on the local machine with CUDA torch installed.
 
 ## Next steps on the 4070 machine
 
