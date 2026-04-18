@@ -55,9 +55,17 @@ pip install --upgrade --force-reinstall torch torchvision --index-url https://do
 
 Then:
 
-1. Set up a Kaggle API token at `~/.kaggle/kaggle.json` (or `%USERPROFILE%\.kaggle\kaggle.json` on Windows).
+1. **Kaggle API setup** — the notebook auto-downloads datasets via the Kaggle CLI. Set the API token as an environment variable before running:
+   ```bash
+   export KAGGLE_API_TOKEN=<your-token>
+   ```
+   You can get a token from [kaggle.com/settings](https://www.kaggle.com/settings) → API → Create New Token.
+   Alternatively place `kaggle.json` at `~/.kaggle/kaggle.json` (or `%USERPROFILE%\.kaggle\kaggle.json` on Windows).
 2. Open `mortgage_collateral_risk_dl.ipynb` in Cursor/Jupyter and run cells top-to-bottom. The data-loading cell will auto-download the three Kaggle datasets.
-3. Optional: download `glove.6B.100d.txt` from Stanford NLP into `data/` to enable the GloVe-backed BiLSTM variation.
+3. Optional: download `glove.6B.100d.txt` from Stanford NLP into `data/` to enable the GloVe-backed BiLSTM variation:
+   ```bash
+   cd data && wget https://nlp.stanford.edu/data/glove.6B.zip && unzip glove.6B.zip glove.6B.100d.txt && rm glove.6B.zip
+   ```
 4. After training completes, run `streamlit run app.py` to test the prototype locally, then deploy to Hugging Face Spaces.
 
 ## Open decisions / things to revisit after first real run
