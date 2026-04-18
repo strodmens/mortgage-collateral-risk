@@ -15,5 +15,6 @@ mortgage_collateral_risk_dl_executed.ipynb
 # Optional local paper PDFs (remove this line if you want them versioned)
 academics/
 
+notebook_run.log
 *.log
 Thumbs.db
