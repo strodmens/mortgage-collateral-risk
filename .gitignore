@@ -8,3 +8,5 @@ models/
 *.pth
 .venv/
 .env
+notebook_run.log
+mortgage_collateral_risk_dl_executed.ipynb
