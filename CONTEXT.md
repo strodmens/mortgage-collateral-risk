@@ -109,6 +109,9 @@ Then:
 ## Useful references
 
 - `docs/PLAN.md` — full plan with architecture diagram and rubric mapping.
+- `docs/NEXT_STEPS.md` — actionable continuation checklist.
+- `docs/REFERENCES.md` — **all external references, academic papers, dataset sources, and code examples**.
 - `Final_Project_Advanced_ML.docx.pdf` — official grading rubric (sections 5.1–5.8 + bonus).
 - `previous_credit_risk_scoring_final_project.ipynb` — previous course project for framing consistency.
+- `academics/` — local copies of academic PDFs (on local machine, not in git).
 - PR #1 on GitHub: https://github.com/strodmens/mortgage-collateral-risk-dl/pull/1
