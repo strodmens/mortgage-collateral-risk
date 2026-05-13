@@ -11,7 +11,7 @@ When both models disagree with the applicant's claimed value tier, the app flags
 
 ## Live demo
 
-[![Open in Streamlit](https://mortgage-collateral-risk.streamlit.app/)]
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://mortgage-collateral-risk.streamlit.app/)
 
 ---
 
