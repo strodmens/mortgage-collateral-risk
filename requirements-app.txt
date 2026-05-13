@@ -1,4 +1,5 @@
 # Installed after torch / torchvision (see Dockerfiles).
+huggingface_hub>=0.20.0
 numpy>=1.24.0
 pandas>=2.0.0
 matplotlib>=3.7.0

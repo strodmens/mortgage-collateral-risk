@@ -5,9 +5,16 @@ FROM python:3.12-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    OMP_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1 \
+    OPENBLAS_NUM_THREADS=1 \
+    TOKENIZERS_PARALLELISM=false
 
 WORKDIR /app
+
+# Matches app.py default ``MODEL_DIR`` = ``/app/models`` (repo folder ``models/``, not ``/models``).
+RUN mkdir -p models
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
@@ -20,6 +27,10 @@ RUN pip install --upgrade pip && \
     pip install -r /tmp/requirements-app.txt
 
 COPY app.py /app/app.py
+
+# Deploy weights + vocab (required for HF Spaces; no host mount there).
+# Local `docker compose` still bind-mounts `./models` over this path at runtime.
+COPY models/ /app/models/
 
 EXPOSE 8501
 

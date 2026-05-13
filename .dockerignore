@@ -16,7 +16,7 @@ academics
 *.pdf
 *.docx
 data
-# Keep models out of the image; mount at runtime (see docker-compose).
-models
+# Models are copied in Dockerfile for cloud deploy (e.g. HF Spaces). Local
+# `docker compose` bind-mounts `./models` over `/app/models` at runtime.
 mortgage_collateral_risk_dl_executed.ipynb
 previous_credit_risk_scoring_final_project.ipynb
